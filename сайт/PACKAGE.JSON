@@ -1,0 +1,26 @@
+{
+  "name": "universum-encyclopedia",
+  "version": "1.0.0",
+  "description": "Энциклопедия знаний о науке, истории и технологиях",
+  "main": "index.html",
+  "scripts": {
+    "start": "live-server --port=3000",
+    "build": "npm run build:css && npm run build:js",
+    "build:css": "postcss css/styles.css -o css/styles.min.css",
+    "build:js": "uglifyjs js/app.js -o js/app.min.js",
+    "deploy": "npm run build && gh-pages -d ."
+  },
+  "keywords": [
+    "энциклопедия",
+    "наука",
+    "история",
+    "технологии",
+    "образование"
+  ],
+  "author": "Universum Team",
+  "license": "MIT",
+  "devDependencies": {
+    "live-server": "^1.2.2",
+    "gh-pages": "^4.0.0"
+  }
+}

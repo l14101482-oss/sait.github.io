@@ -1,0 +1,15 @@
+# universum/robots.txt
+User-agent: *
+Allow: /
+Disallow: /admin/
+Disallow: /private/
+
+Sitemap: https://yourdomain.com/sitemap.xml
+
+# Скорость сканирования
+Crawl-delay: 1
+
+# Основные директории
+Allow: /css/
+Allow: /js/
+Allow: /images/

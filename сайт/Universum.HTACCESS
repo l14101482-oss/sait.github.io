@@ -1,0 +1,37 @@
+# universum/.htaccess
+
+# Включение кэширования
+<IfModule mod_expires.c>
+  ExpiresActive On
+  ExpiresByType text/html "access plus 1 hour"
+  ExpiresByType text/css "access plus 1 month"
+  ExpiresByType application/javascript "access plus 1 month"
+  ExpiresByType image/png "access plus 1 month"
+  ExpiresByType image/jpeg "access plus 1 month"
+</IfModule>
+
+# Сжатие GZIP
+<IfModule mod_deflate.c>
+  AddOutputFilterByType DEFLATE text/plain
+  AddOutputFilterByType DEFLATE text/html
+  AddOutputFilterByType DEFLATE text/css
+  AddOutputFilterByType DEFLATE application/javascript
+  AddOutputFilterByType DEFLATE application/json
+</IfModule>
+
+# Защита от XSS
+<IfModule mod_headers.c>
+  Header set X-XSS-Protection "1; mode=block"
+  Header set X-Content-Type-Options nosniff
+  Header set X-Frame-Options DENY
+</IfModule>
+
+# Редирект на HTTPS
+RewriteEngine On
+RewriteCond %{HTTPS} off
+RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+
+# ЧПУ (человеко-понятные URL)
+RewriteRule ^science/?$ science.html [NC,L]
+RewriteRule ^history/?$ history.html [NC,L]
+RewriteRule ^technology/?$ technology.html [NC,L]

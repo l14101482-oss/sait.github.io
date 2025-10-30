@@ -1,0 +1,491 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Энциклопедия знаний</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #fff;
+            min-height: 100vh;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        .snowflake {
+            position: absolute;
+            top: -10px;
+            color: white;
+            font-size: 1em;
+            user-select: none;
+            pointer-events: none;
+            opacity: 0.8;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            position: relative;
+            z-index: 10;
+        }
+
+        header {
+            text-align: center;
+            padding: 30px 0;
+            margin-bottom: 30px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+        }
+
+        h1 {
+            font-size: 3.5rem;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .subtitle {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+
+        .search-container {
+            display: flex;
+            margin: 30px 0;
+        }
+
+        #search-input {
+            flex: 1;
+            padding: 15px 20px;
+            border: none;
+            border-radius: 50px 0 0 50px;
+            font-size: 1.1rem;
+            background: rgba(255, 255, 255, 0.9);
+            color: #333;
+        }
+
+        #search-btn {
+            padding: 15px 30px;
+            border: none;
+            border-radius: 0 50px 50px 0;
+            background: #4a00e0;
+            color: white;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        #search-btn:hover {
+            background: #8e2de2;
+        }
+
+        .categories {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-bottom: 30px;
+            justify-content: center;
+        }
+
+        .category-btn {
+            padding: 12px 25px;
+            border: none;
+            border-radius: 50px;
+            background: rgba(255, 255, 255, 0.15);
+            color: white;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(5px);
+        }
+
+        .category-btn:hover {
+            background: rgba(255, 255, 255, 0.25);
+            transform: translateY(-3px);
+        }
+
+        .category-btn.active {
+            background: rgba(255, 255, 255, 0.3);
+            font-weight: bold;
+        }
+
+        .content {
+            display: grid;
+            grid-template-columns: 1fr 3fr;
+            gap: 30px;
+        }
+
+        .sidebar {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            padding: 20px;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+            height: fit-content;
+        }
+
+        .sidebar h2 {
+            margin-bottom: 15px;
+            font-size: 1.5rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+            padding-bottom: 10px;
+        }
+
+        .article-list {
+            list-style-type: none;
+        }
+
+        .article-item {
+            padding: 12px 15px;
+            margin-bottom: 10px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .article-item:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: translateX(5px);
+        }
+
+        .article-item.active {
+            background: rgba(255, 255, 255, 0.25);
+            font-weight: bold;
+        }
+
+        .main-content {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            padding: 30px;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+            min-height: 500px;
+        }
+
+        .article-title {
+            font-size: 2.2rem;
+            margin-bottom: 20px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+            padding-bottom: 10px;
+        }
+
+        .article-content {
+            line-height: 1.7;
+            font-size: 1.1rem;
+        }
+
+        .article-content p {
+            margin-bottom: 15px;
+        }
+
+        .article-content img {
+            max-width: 100%;
+            border-radius: 10px;
+            margin: 15px 0;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .tools {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .tool-btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.15);
+            color: white;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .tool-btn:hover {
+            background: rgba(255, 255, 255, 0.25);
+        }
+
+        footer {
+            text-align: center;
+            margin-top: 50px;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            backdrop-filter: blur(10px);
+        }
+
+        @media (max-width: 900px) {
+            .content {
+                grid-template-columns: 1fr;
+            }
+            
+            h1 {
+                font-size: 2.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Энциклопедия знаний</h1>
+            <p class="subtitle">Исследуйте мир науки, истории, искусства и технологий</p>
+        </header>
+
+        <div class="search-container">
+            <input type="text" id="search-input" placeholder="Поиск по энциклопедии...">
+            <button id="search-btn">Найти</button>
+        </div>
+
+        <div class="categories">
+            <button class="category-btn active" data-category="all">Все категории</button>
+            <button class="category-btn" data-category="science">Наука</button>
+            <button class="category-btn" data-category="history">История</button>
+            <button class="category-btn" data-category="art">Искусство</button>
+            <button class="category-btn" data-category="technology">Технологии</button>
+            <button class="category-btn" data-category="nature">Природа</button>
+        </div>
+
+        <div class="content">
+            <div class="sidebar">
+                <h2>Статьи</h2>
+                <ul class="article-list">
+                    <li class="article-item active" data-article="quantum-physics">Квантовая физика</li>
+                    <li class="article-item" data-article="ancient-rome">Древний Рим</li>
+                    <li class="article-item" data-article="renaissance">Эпоха Возрождения</li>
+                    <li class="article-item" data-article="ai">Искусственный интеллект</li>
+                    <li class="article-item" data-article="amazon-rainforest">Амазонские тропики</li>
+                    <li class="article-item" data-article="space-exploration">Исследование космоса</li>
+                    <li class="article-item" data-article="human-brain">Человеческий мозг</li>
+                    <li class="article-item" data-article="digital-revolution">Цифровая революция</li>
+                </ul>
+            </div>
+
+            <div class="main-content">
+                <h2 class="article-title">Квантовая физика</h2>
+                <div class="article-content">
+                    <p>Квантовая физика — это раздел теоретической физики, изучающий квантово-механические и квантово-полевые системы и законы их движения. Основные законы квантовой физики изучаются в рамках квантовой механики и квантовой теории поля.</p>
+                    
+                    <p>Квантовая физика описывает свойства и поведение материи и энергии на атомном и субатомном уровнях. Она возникла в начале XX века, когда классическая физика не могла объяснить некоторые явления, такие как излучение абсолютно чёрного тела, фотоэффект, стабильность атомов и дискретные спектры атомов.</p>
+                    
+                    <h3>Основные принципы квантовой физики:</h3>
+                    <ul>
+                        <li><strong>Квантование</strong> — некоторые физические величины могут принимать только дискретные значения</li>
+                        <li><strong>Волновая функция</strong> — математическое описание квантового состояния системы</li>
+                        <li><strong>Принцип неопределённости Гейзенберга</strong> — невозможно одновременно точно измерить координату и импульс частицы</li>
+                        <li><strong>Корпускулярно-волновой дуализм</strong> — объекты микромира проявляют как волновые, так и корпускулярные свойства</li>
+                        <li><strong>Суперпозиция</strong> — квантовая система может находиться одновременно в нескольких состояниях</li>
+                    </ul>
+                    
+                    <p>Квантовая физика лежит в основе понимания строения вещества, ядерных реакций, работы лазеров, полупроводниковых устройств и многих других современных технологий.</p>
+                </div>
+
+                <div class="tools">
+                    <button class="tool-btn" id="print-btn">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                            <path d="M2.5 8a.5.5 0 1 0 0-1 .5.5 0 0 0 0 1z"/>
+                            <path d="M5 1a2 2 0 0 0-2 2v2H2a2 2 0 0 0-2 2v3a2 2 0 0 0 2 2h1v1a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2v-1h1a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-1V3a2 2 0 0 0-2-2H5zM4 3a1 1 0 0 1 1-1h6a1 1 0 0 1 1 1v2H4V3zm1 5a2 2 0 0 0-2 2v1H2a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h12a1 1 0 0 1 1 1v3a1 1 0 0 1-1 1h-1v-1a2 2 0 0 0-2-2H5zm7 2v3a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1v-3a1 1 0 0 1 1-1h6a1 1 0 0 1 1 1z"/>
+                        </svg>
+                        Печать
+                    </button>
+                    <button class="tool-btn" id="save-btn">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                            <path d="M.5 9.9a.5.5 0 0 1 .5.5v2.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.5a.5.5 0 0 1 1 0v2.5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.5a.5.5 0 0 1 .5-.5z"/>
+                            <path d="M7.646 11.854a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 10.293V1.5a.5.5 0 0 0-1 0v8.793L5.354 8.146a.5.5 0 1 0-.708.708l3 3z"/>
+                        </svg>
+                        Сохранить
+                    </button>
+                    <button class="tool-btn" id="share-btn">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                            <path d="M11 2.5a2.5 2.5 0 1 1 .603 1.628l-6.718 3.12a2.499 2.499 0 0 1 0 1.504l6.718 3.12a2.5 2.5 0 1 1-.488.876l-6.718-3.12a2.5 2.5 0 1 1 0-3.256l6.718-3.12A2.5 2.5 0 0 1 11 2.5z"/>
+                        </svg>
+                        Поделиться
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <footer>
+            <p>Энциклопедия знаний © 2023 | Все права защищены</p>
+        </footer>
+    </div>
+
+    <script>
+        // Создание снежинок
+        function createSnowflakes() {
+            const snowContainer = document.body;
+            const snowflakeCount = 50;
+            
+            for (let i = 0; i < snowflakeCount; i++) {
+                const snowflake = document.createElement('div');
+                snowflake.classList.add('snowflake');
+                snowflake.innerHTML = '❄';
+                
+                // Случайные начальные параметры
+                const size = Math.random() * 15 + 10;
+                const startPosition = Math.random() * 100;
+                const animationDuration = Math.random() * 10 + 5;
+                const opacity = Math.random() * 0.5 + 0.3;
+                
+                snowflake.style.left = `${startPosition}vw`;
+                snowflake.style.fontSize = `${size}px`;
+                snowflake.style.opacity = opacity;
+                snowflake.style.animation = `fall ${animationDuration}s linear infinite`;
+                
+                snowContainer.appendChild(snowflake);
+            }
+        }
+
+        // Добавление CSS анимации для снежинок
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes fall {
+                0% {
+                    transform: translateY(-10px) rotate(0deg);
+                }
+                100% {
+                    transform: translateY(100vh) rotate(360deg);
+                }
+            }
+        `;
+        document.head.appendChild(style);
+
+        // Инициализация снежинок
+        createSnowflakes();
+
+        // Обработчики событий для категорий
+        document.querySelectorAll('.category-btn').forEach(button => {
+            button.addEventListener('click', function() {
+                document.querySelectorAll('.category-btn').forEach(btn => {
+                    btn.classList.remove('active');
+                });
+                this.classList.add('active');
+                
+                // Здесь можно добавить фильтрацию статей по категориям
+            });
+        });
+
+        // Обработчики событий для статей
+        document.querySelectorAll('.article-item').forEach(item => {
+            item.addEventListener('click', function() {
+                document.querySelectorAll('.article-item').forEach(i => {
+                    i.classList.remove('active');
+                });
+                this.classList.add('active');
+                
+                // Здесь можно добавить загрузку содержимого статьи
+                const articleId = this.getAttribute('data-article');
+                updateArticleContent(articleId);
+            });
+        });
+
+        // Функция обновления содержимого статьи
+        function updateArticleContent(articleId) {
+            const articleTitles = {
+                'quantum-physics': 'Квантовая физика',
+                'ancient-rome': 'Древний Рим',
+                'renaissance': 'Эпоха Возрождения',
+                'ai': 'Искусственный интеллект',
+                'amazon-rainforest': 'Амазонские тропики',
+                'space-exploration': 'Исследование космоса',
+                'human-brain': 'Человеческий мозг',
+                'digital-revolution': 'Цифровая революция'
+            };
+            
+            const articleContents = {
+                'quantum-physics': `
+                    <p>Квантовая физика — это раздел теоретической физики, изучающий квантово-механические и квантово-полевые системы и законы их движения. Основные законы квантовой физики изучаются в рамках квантовой механики и квантовой теории поля.</p>
+                    
+                    <p>Квантовая физика описывает свойства и поведение материи и энергии на атомном и субатомном уровнях. Она возникла в начале XX века, когда классическая физика не могла объяснить некоторые явления, такие как излучение абсолютно чёрного тела, фотоэффект, стабильность атомов и дискретные спектры атомов.</p>
+                    
+                    <h3>Основные принципы квантовой физики:</h3>
+                    <ul>
+                        <li><strong>Квантование</strong> — некоторые физические величины могут принимать только дискретные значения</li>
+                        <li><strong>Волновая функция</strong> — математическое описание квантового состояния системы</li>
+                        <li><strong>Принцип неопределённости Гейзенберга</strong> — невозможно одновременно точно измерить координату и импульс частицы</li>
+                        <li><strong>Корпускулярно-волновой дуализм</strong> — объекты микромира проявляют как волновые, так и корпускулярные свойства</li>
+                        <li><strong>Суперпозиция</strong> — квантовая система может находиться одновременно в нескольких состояниях</li>
+                    </ul>
+                    
+                    <p>Квантовая физика лежит в основе понимания строения вещества, ядерных реакций, работы лазеров, полупроводниковых устройств и многих других современных технологий.</p>
+                `,
+                'ancient-rome': `
+                    <p>Древний Рим — одна из величайших цивилизаций древнего мира, существовавшая на протяжении более 12 веков. Римская цивилизация оставила неизгладимый след в истории человечества, оказав влияние на развитие права, архитектуры, инженерии, литературы и многих других областей.</p>
+                    
+                    <h3>Основные периоды римской истории:</h3>
+                    <ul>
+                        <li><strong>Царский период (753–509 до н.э.)</strong> — основание Рима и правление семи царей</li>
+                        <li><strong>Римская республика (509–27 до н.э.)</strong> — период расцвета республиканских институтов</li>
+                        <li><strong>Римская империя (27 до н.э.–476 н.э.)</strong> — период императорского правления и максимального расширения территории</li>
+                    </ul>
+                    
+                    <p>На пике своего могущества Римская империя простиралась от Британии на севере до Египта на юге и от Испании на западе до Месопотамии на востоке. Римляне создали обширную сеть дорог, акведуков, развили право, которое стало основой многих современных правовых систем, и распространили латинский язык, который дал начало романским языкам.</p>
+                    
+                    <p>Падение Западной Римской империи в 476 году н.э. традиционно считается концом античной эпохи и началом Средневековья.</p>
+                `,
+                'renaissance': `
+                    <p>Эпоха Возрождения (Ренессанс) — период в истории европейской культуры, охватывающий примерно XIV–XVI века. Это был переходный период от Средневековья к Новому времени, характеризующийся возрождением интереса к античному наследию, гуманизму и развитию искусства и науки.</p>
+                    
+                    <h3>Характерные черты эпохи Возрождения:</h3>
+                    <ul>
+                        <li><strong>Гуманизм</strong> — философское течение, провозглашавшее ценность человеческой личности</li>
+                        <li><strong>Интерес к античности</strong> — возрождение классических образцов в искусстве и литературе</li>
+                        <li><strong>Развитие наук</strong> — значительные достижения в астрономии, физике, медицине</li>
+                        <li><strong>Расцвет искусства</strong> — появление великих мастеров живописи, скульптуры и архитектуры</li>
+                    </ul>
+                    
+                    <p>Эпоха Возрождения началась в Италии, где такие города, как Флоренция, Венеция и Рим, стали центрами культурного и интеллектуального развития. Среди наиболее известных деятелей эпохи — Леонардо да Винчи, Микеланджело, Рафаэль, Данте Алигьери, Петрарка, Николай Коперник и Галилео Галилей.</p>
+                    
+                    <p>Возрождение оказало огромное влияние на последующее развитие европейской культуры и заложило основы современного западного общества.</p>
+                `
+            };
+            
+            document.querySelector('.article-title').textContent = articleTitles[articleId] || 'Статья';
+            document.querySelector('.article-content').innerHTML = articleContents[articleId] || '<p>Содержание статьи скоро будет добавлено.</p>';
+        }
+
+        // Обработчики для функциональных кнопок
+        document.getElementById('print-btn').addEventListener('click', function() {
+            window.print();
+        });
+
+        document.getElementById('save-btn').addEventListener('click', function() {
+            alert('Функция сохранения статьи будет реализована в будущем обновлении.');
+        });
+
+        document.getElementById('share-btn').addEventListener('click', function() {
+            alert('Функция совместного использования будет реализована в будущем обновлении.');
+        });
+
+        // Обработчик поиска
+        document.getElementById('search-btn').addEventListener('click', function() {
+            const searchTerm = document.getElementById('search-input').value;
+            if (searchTerm.trim() !== '') {
+                alert(`Поиск: "${searchTerm}" - функция поиска будет полностью реализована в будущем обновлении.`);
+            }
+        });
+
+        document.getElementById('search-input').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                document.getElementById('search-btn').click();
+            }
+        });
+    </script>
+</body>
+</html>
